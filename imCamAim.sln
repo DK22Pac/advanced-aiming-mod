@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imCamAim", "imCamAim\imCamAim.vcxproj", "{57ECCCEF-6165-43A7-B9A2-C9182E93652E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Dbg|x86 = Dbg|x86
+		Dbg-XP|x86 = Dbg-XP|x86
+		Rel|x86 = Rel|x86
+		Rel-XP|x86 = Rel-XP|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Dbg|x86.ActiveCfg = Dbg|Win32
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Dbg|x86.Build.0 = Dbg|Win32
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Dbg-XP|x86.ActiveCfg = Dbg-XP|Win32
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Dbg-XP|x86.Build.0 = Dbg-XP|Win32
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Rel|x86.ActiveCfg = Rel|Win32
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Rel|x86.Build.0 = Rel|Win32
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Rel-XP|x86.ActiveCfg = Rel-XP|Win32
+		{57ECCCEF-6165-43A7-B9A2-C9182E93652E}.Rel-XP|x86.Build.0 = Rel-XP|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
