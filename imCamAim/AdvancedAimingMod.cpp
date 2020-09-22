@@ -1,6 +1,7 @@
 #include "plugin.h"
 #include "game_sa\common.h"
 #include "game_sa\CCam.h"
+#include "CRunningScript.h"
 
 using namespace plugin;
 
@@ -39,6 +40,13 @@ public:
 	static std::list<tAimingOffsetData*> offsets;
 
 	static unsigned int updateSets;
+
+	static bool holdingCommandLastFrame;
+
+	static unsigned int keyId1;
+	static unsigned int keyId2;
+	static unsigned int buttonId1;
+	static unsigned int buttonId2;
 
 	static bool rightSide;
 
@@ -83,6 +91,11 @@ public:
 		fgets(line, 512, file);
 		sscanf(line, "%s %f", dummy, (float *)0x8CC4A0);
 		fgets(line, 512, file);
+		fgets(line, 512, file);
+		sscanf(line, "%s %d %d", dummy, &keyId1, &keyId2);
+		fgets(line, 512, file);
+		sscanf(line, "%s %d %d", dummy, &buttonId1, &buttonId2);
+		fgets(line, 512, file);
 		for (int i = 0; i < 4; i++) {
 			fgets(line, 512, file);
 			sscanf(line, "%s %f %f %f %f %f %f %f", dummy, &gData[i].f0, &gData[i].f1, &gData[i].f2, &gData[i].f3, &gData[i].f4,
@@ -94,7 +107,7 @@ public:
 		int weaponId = 0;
 		for (int i = 0; i < 16; i++) {
 			fgets(line, 512, file);
-			if (sscanf(line, "%i %f %f %f", &weaponId, &offset.x, &offset.y, &offset.z) == 4) {
+			if (sscanf(line, "%d %f %f %f", &weaponId, &offset.x, &offset.y, &offset.z) == 4) {
 				tAimingOffsetData *data = new tAimingOffsetData;
 				data->weaponId = weaponId;
 				data->offset = offset;
@@ -105,6 +118,48 @@ public:
 	}
 
 	static void _fastcall MyProcess_AimWeapon(CCam *cam, int, CVector const &vec, float arg3, float arg4, float arg5) {
+
+		// check for commands
+
+		if (buttonId1 != buttonId2) {
+			if (buttonId2 != 0 && reinterpret_cast<CRunningScript*>(0)->GetPadState(0, buttonId2))
+				rightSide = false;
+			else if (buttonId1 != 0 && reinterpret_cast<CRunningScript*>(0)->GetPadState(0, buttonId1))
+				rightSide = true;
+		}
+		else {
+			if (buttonId1 != 0) {
+				if (reinterpret_cast<CRunningScript*>(0)->GetPadState(0, buttonId1)) {
+					if (!holdingCommandLastFrame) {
+						rightSide = !rightSide;
+						holdingCommandLastFrame = true;
+					}
+				}
+				else holdingCommandLastFrame = false;
+			}
+		}
+
+		if (keyId1 != keyId2) {
+			if (keyId2 != 0 && KeyPressed(keyId2))
+				rightSide = false;
+			else if (keyId1 != 0 && KeyPressed(keyId1))
+				rightSide = true;
+		}
+		else {
+			if (keyId1 != 0) {
+				if (KeyPressed(keyId1)) {
+					if (!holdingCommandLastFrame) {
+						rightSide = !rightSide;
+						holdingCommandLastFrame = true;
+					}
+				}
+				else holdingCommandLastFrame = false;
+			}
+		}
+
+		if (updateSets)
+			ReadSettings();
+
 		CPed *playa = FindPlayerPed();
 		if (playa && !playa->m_nPedFlags.bInVehicle) {
 
@@ -130,18 +185,6 @@ public:
 		patch::RedirectCall(0x527A95, MyProcess_AimWeapon);
 		// read settings
 		ReadSettings();
-
-		Events::gameProcessEvent += []() {
-			// check for key-press
-			if (KeyPressed('Z'))
-				rightSide = false;
-			else if (KeyPressed('X'))
-				rightSide = true;
-
-			// update settings
-			if (updateSets)
-				ReadSettings();
-		};
 	}
 };
 
@@ -154,5 +197,12 @@ CVector AdvancedAimingMod::defaultOffset;
 unsigned int AdvancedAimingMod::updateSets;
 
 bool AdvancedAimingMod::rightSide = false;
+
+bool AdvancedAimingMod::holdingCommandLastFrame;
+
+unsigned int AdvancedAimingMod::keyId1;
+unsigned int AdvancedAimingMod::keyId2;
+unsigned int AdvancedAimingMod::buttonId1;
+unsigned int AdvancedAimingMod::buttonId2;
 
 AdvancedAimingMod plg;
