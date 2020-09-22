@@ -104,6 +104,8 @@ public:
 		}
 		memcpy((void *)0x8CC4C0, gData, 112);
 		fgets(line, 512, file);
+		for (auto offset : offsets) delete offset;
+		offsets.clear();
 		CVector offset;
 		int weaponId = 0;
 		for (int i = 0; i < 16; i++) {
