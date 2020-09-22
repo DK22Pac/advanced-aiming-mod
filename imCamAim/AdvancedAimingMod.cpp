@@ -42,6 +42,7 @@ public:
 	static unsigned int updateSets;
 
 	static bool holdingCommandLastFrame;
+	static bool holdingKeyLastFrame;
 
 	static unsigned int keyId1;
 	static unsigned int keyId2;
@@ -148,12 +149,12 @@ public:
 		else {
 			if (keyId1 != 0) {
 				if (KeyPressed(keyId1)) {
-					if (!holdingCommandLastFrame) {
+					if (!holdingKeyLastFrame) {
 						rightSide = !rightSide;
-						holdingCommandLastFrame = true;
+						holdingKeyLastFrame = true;
 					}
 				}
-				else holdingCommandLastFrame = false;
+				else holdingKeyLastFrame = false;
 			}
 		}
 
@@ -199,6 +200,7 @@ unsigned int AdvancedAimingMod::updateSets;
 bool AdvancedAimingMod::rightSide = false;
 
 bool AdvancedAimingMod::holdingCommandLastFrame;
+bool AdvancedAimingMod::holdingKeyLastFrame;
 
 unsigned int AdvancedAimingMod::keyId1;
 unsigned int AdvancedAimingMod::keyId2;
